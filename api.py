@@ -42,6 +42,9 @@ lr_model = LogisticRegression(
     class_weight='balanced', C=0.300, random_state=42)
 lr_model.fit(X_train, y_train.ravel())
 
+lr_predict_test = lr_model.predict(X_test)
+accuracy_score = metrics.accuracy_score(y_test, lr_predict_test)
+
 
 def args_grouping_required(func):
     def wraps(*args, **kwargs):
@@ -65,11 +68,6 @@ def args_grouping_required(func):
     return wraps
 
 
-def accuracy_score():
-    lr_predict_test = lr_model.predict(X_test)
-    return metrics.accuracy_score(y_test, lr_predict_test)
-
-
 @app.route('/')
 def index():
     return "Welcome to Diabetes diagnostic Machine Learnig API"
@@ -77,6 +75,9 @@ def index():
 
 @app.route('/testingModel')
 def testing_modele():
+    lr_model = LogisticRegression(
+        class_weight='balanced', C=0.300, random_state=42)
+    lr_model.fit(X_train, y_train.ravel())
     lr_predict_test = lr_model.predict(X_test)
     return jsonify(accuracy="{0:.4f}".format(metrics.accuracy_score(y_test, lr_predict_test)))
 
@@ -92,10 +93,10 @@ def predict_diabete():
     lr_predict_test = lr_model.predict(df)
     print(lr_predict_test)
     res = True if lr_predict_test[0] == 1 else False
-    return jsonify(resultat=res, accuracy=accuracy_score())
+    return jsonify(resultat=res, accuracy=accuracy_score)
 
 
 if __name__ == "__main__":
     HOST = os.environ.get('SERVER_HOST', 'localhost')
     PORT = int(os.environ.get('SERVER_PORT', '5000'))
-    app.run(HOST, PORT, debug=True)
+    app.run('localhost', 5000, debug=True)
