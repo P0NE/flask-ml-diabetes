@@ -20,5 +20,5 @@ Le modèle le plus convaincant a été une régression logistique.
 - age
 
 # Réponse de l'API
--resultat: Pourcentage d'avoir du diabète
--accuracy: accuracy score du modèle utilisé
+- resultat: Pourcentage d'avoir du diabète
+- accuracy: accuracy score du modèle utilisé
